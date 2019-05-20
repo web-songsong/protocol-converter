@@ -1,6 +1,6 @@
 <template>
   <div class="home"
-       @drag="handleClick">
+       @drop="handleClick">
     <div class="content">
       将文件拖放到这里
     </div>
