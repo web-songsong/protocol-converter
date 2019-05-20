@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    this chamring song
+    word
     <button @click="$router.push('/home')">adf</button>
   </div>
 </template>
