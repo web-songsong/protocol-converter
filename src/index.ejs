@@ -20,6 +20,12 @@
         window.__static = require('path')
           .join(__dirname, '/static')
           .replace(/\\/g, '\\\\')
+      document.addEventListener('drop', function(e) {
+        e.preventDefault()
+      })
+      document.addEventListener('dragover', function(e) {
+        e.preventDefault()
+      })
     </script>
     <% } %>
 

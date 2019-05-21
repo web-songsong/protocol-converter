@@ -1,32 +1,68 @@
 <template>
-  <div class="home"
-       @drop="handleClick">
-    <div class="content">
+  <div class="home">
+    <div class="content"
+         @dragover.prevent
+         @drop.prevent="fileDrop">
       将文件拖放到这里
+    </div>
+    <div class="text">
+      {{fileName}}
     </div>
     <div class="operation"
          v-if="show">
       <div class="btn_wrap">
-        <span class="btn">复制代码</span>
-        <span class="btn">预览</span>
+        <span class="btn"
+              @click="copyClick"
+              :data-clipboard-text="vueData">复制代码</span>
       </div>
     </div>
   </div>
 </template>
 <script>
+const { ipcRenderer } = require('electron')
+
+import Clipboard from 'clipboard'
+
 export default {
   data() {
     return {
-      show: true
+      show: false,
+      vueData: '',
+      fileName: '',
+      flag: true
     }
   },
   methods: {
-    handleClick() {
-      console.log('handleClick')
+    fileDrop(e) {
+      const path = e.dataTransfer.files[0].path
+      this.fileName = e.dataTransfer.files[0].name
+      ipcRenderer.send('path_file', path)
     },
-    song() {
-      console.log('xx')
+    copyClick() {
+      if (!this.flag) return
+      this.flag = !this.flag
+      const clipboard = new Clipboard('.btn')
+      clipboard.on('success', () => {
+        alert('复制成功')
+        this.flag = !this.flag
+        clipboard.destroy()
+      })
+      clipboard.on('error', () => {
+        alert('复制失败')
+        this.flag = !this.flag
+        clipboard.destroy()
+      })
     }
+  },
+  mounted() {
+    ipcRenderer.on('node_over', (event, arg) => {
+      alert('成功')
+      this.show = true
+      this.vueData = arg
+    })
+    ipcRenderer.on('node_over_err', (event, err) => {
+      alert('失败')
+    })
   }
 }
 </script>
@@ -47,6 +83,14 @@ export default {
     font-size: 14px;
     text-align: center;
   }
+  .text {
+    width: 100%;
+    position: fixed;
+    color: #fff;
+    font-size: 14px;
+    bottom: 50px;
+    text-align: center;
+  }
   .operation {
     position: fixed;
     bottom: 0px;
@@ -61,6 +105,7 @@ export default {
       top: 6px;
       align-items: center;
       .btn {
+        cursor: pointer;
         background: #636363;
         border-radius: 4px;
         padding: 0 5px;
@@ -71,5 +116,10 @@ export default {
       }
     }
   }
+}
+.test {
+  width: 100px;
+  height: 100px;
+  background: red;
 }
 </style>

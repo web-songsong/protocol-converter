@@ -22,12 +22,15 @@
     "postinstall": "npm run lint:fix"
   },
   "dependencies": {
-    "vue": "^2.5.16",
+    "adm-zip": "^0.4.13",
     "axios": "^0.18.0",
+    "clipboard": "^2.0.4",
+    "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0"
+    "vuex-electron": "^1.0.0",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
