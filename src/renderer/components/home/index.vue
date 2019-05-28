@@ -15,6 +15,12 @@
               @click="copyClick"
               :data-clipboard-text="vueData">复制代码</span>
       </div>
+      <div class="btn_wrap">
+        <span class="btn1"
+          @click="downloadIt">
+          下载
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +58,17 @@ export default {
         this.flag = !this.flag
         clipboard.destroy()
       })
+    },
+    downloadIt() {
+      // 下载
+      const text = this.vueData
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', this.fileName.split('.')[0]+'.vue');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element)
     }
   },
   mounted() {
@@ -113,6 +130,18 @@ export default {
         font-size: 12px;
         color: #ffffff;
         margin-right: 10px;
+      }
+      .btn1 {
+       cursor: pointer;
+        background: #636363;
+        border-radius: 4px;
+        padding: 0 5px;
+        height: 16px;
+        font-size: 12px;
+        color: #ffffff;
+        margin-right: 0px; 
+        position: fixed;
+        left: 10px;
       }
     }
   }
